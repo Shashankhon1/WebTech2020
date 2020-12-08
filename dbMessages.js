@@ -10,4 +10,4 @@ const woofSchema=mongoose.Schema({
 
 });
 
-export default mongoose.model('messageContent', woofSchema)
+export default mongoose.model('messagecontents', woofSchema)
