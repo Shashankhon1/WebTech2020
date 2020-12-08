@@ -1,0 +1,28 @@
+.login{
+    background-color: white;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+
+}
+
+
+.login__container{
+    padding: 100px;
+    background-color: white;
+    text-align:center;
+
+
+}
+
+.login__container > button{
+    margin-top: 44px;
+    padding: 10px;
+    background-color: rgb(34, 153, 250);
+    text-align:center;
+    color: rgb(252, 250, 253);
+
+
+
+}

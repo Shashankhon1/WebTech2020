@@ -1,20 +1,70 @@
 import { Avatar, IconButton  } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import AttachmentIcon from '@material-ui/icons/Attachment';
-import React from 'react';
+import React ,{useState, useEffect, Component}from 'react';
+
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EmojiEmotionsTwoToneIcon from '@material-ui/icons/EmojiEmotionsTwoTone';
 import "./Chat.css";
 import MicNoneTwoToneIcon from '@material-ui/icons/MicNoneTwoTone';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
-function Chat() {    
+import axios from './axios';
+import {useStateValue} from "./StateProvider";
+
+
+
+
+
+function Chat({messages}) { 
+
+    //React.Component.state = {
+        //messages: []
+     // };
+    
+
+    
+    
+
+    const [input, setInput] =  useState("")
+    var ok =new Date().toUTCString()
+    const [{user},dispatch]=useStateValue();
+
+
+    const sendMessage = async (e)=>{
+        e.preventDefault();
+       
+        axios.post('/messages/new',{
+            message: input,
+            name: user.displayName,
+            timestamp: ok,
+            received: true
+        
+            
+
+    });
+
+    
+
+    setInput("");
+
+};    
     return (
         <div className='chat'>
+
             <div className="chat__header">
                 <Avatar />
                 <div className="chat__headerInfo">
-                    <h3> Room Name</h3>
-                    <p>Last Conversation at ....</p>
+                    <h3> Common group</h3>
+                    <p>Last Conversation at </p>
+                    <span className="chat__timestamp">
+                            { 
+                        
+                            new Date().toUTCString()
+                            //Current Hours
+                        
+                    
+                            }
+                        </span>
 
                 </div>
 
@@ -38,46 +88,37 @@ function Chat() {
 
             </div>
 
-            <div className="chat__body">
-                
-                
-                <p><div className="chat__message">
-                        <span className="chat__name">kron</span>   
-                        <span className="chat__msg">ejjample</span>  
 
-                        <span className="chat__timestamp">
+          <div className="chat__body">
+            { messages.map( (message)=>(
+
+                <p className={`chat__message ${ message.name===user.displayName && "chat__receiver"}`} >   
+                    <span className="chat__name">{message.name}</span>   
+                    <span className="chat__msg">{message.message}</span>  
+    
+                    <span className="chat__timestamp">
                             { 
+                            message.timestamp
                         
-                            new Date().toUTCString()
+                            //new Date().toUTCString()
                             //Current Hours
                         
                     
                             }
-                        </span>
+                    </span>
 
-                
-                    
-                    </div>  
+
                 </p>
 
-                <p><div className="chat__message chat__receiver">
-                        <span className="chat__name">kron</span>   
-                        <span className="chat__msg">ejjample</span>  
+            ))}
 
-                        <span className="chat__timestamp">
-                            { 
-                        
-                            new Date().toUTCString()
-                            //Current Hours
-                        
-                    
-                            }
-                        </span>
+                   
 
                 
-                    
-                    </div>  
-                </p>
+               
+
+               
+            
                 
 
                 
@@ -87,15 +128,13 @@ function Chat() {
             <div className="chat__footer">
                 <EmojiEmotionsTwoToneIcon />
                 <form>
-                    <input 
-                        placeholders = "Type your message"
+                    <input value={input} onChange={e=> setInput(e.target.value)} placeholders = "Type your message"
                         type = "text" />
-                        <button 
-                        type="submit"> <IconButton><SendTwoToneIcon /> </IconButton></button>
+                        <button onClick= {sendMessage} type="submit"> <IconButton><SendTwoToneIcon /> </IconButton></button>
 
      
                 </form>
-                <MicNoneTwoToneIcon />
+                <MicNoneTwoToneIcon  type="voice"/>
             </div>        
                 
                 
@@ -105,4 +144,6 @@ function Chat() {
 }
 
 
-export default Chat
+export default Chat;
+
+
